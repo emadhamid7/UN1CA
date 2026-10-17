@@ -1,0 +1,28 @@
+name: Import EternityROM 9825
+on: workflow_dispatch
+permissions:
+  contents: write
+jobs:
+  import:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: exynos9820-support
+      - name: Fetch from EternityROM
+        run: |
+          git clone --depth 1 --branch sixteen --filter=blob:none --sparse https://github.com/Ocin4ever/EternityROM /tmp/eternity
+          cd /tmp/eternity
+          git sparse-checkout set platform/exynos9825 target/d1 target/d1xks target/d2s target/d2x target/d2xks
+      - name: Copy into repo
+        run: |
+          mkdir -p platform target
+          cp -a /tmp/eternity/platform/exynos9825 platform/
+          for t in d1 d1xks d2s d2x d2xks; do cp -a /tmp/eternity/target/$t target/; done
+      - name: Commit and push
+        run: |
+          git config user.name github-actions
+          git config user.email actions@github.com
+          git add platform target
+          git commit -m "Add Exynos 9825 platform and Note10 targets from EternityROM"
+          git push origin exynos9820-support
