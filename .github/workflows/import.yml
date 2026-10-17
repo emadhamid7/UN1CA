@@ -1,0 +1,27 @@
+name: Import ExtremeROM 9820
+on: workflow_dispatch
+permissions:
+  contents: write
+jobs:
+  import:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Fetch from ExtremeROM
+        run: |
+          git clone --depth 1 --branch sixteen --filter=blob:none --sparse https://github.com/ExtremeXT/ExtremeROM /tmp/extreme
+          cd /tmp/extreme
+          git sparse-checkout set platform/exynos9820 target/beyond0lte target/beyond1lte target/beyond2lte target/beyondx
+      - name: Copy into repo
+        run: |
+          mkdir -p platform target
+          cp -a /tmp/extreme/platform/exynos9820 platform/
+          for t in beyond0lte beyond1lte beyond2lte beyondx; do cp -a /tmp/extreme/target/$t target/; done
+      - name: Commit and push
+        run: |
+          git config user.name github-actions
+          git config user.email actions@github.com
+          git checkout -b exynos9820-support
+          git add platform target
+          git commit -m "Add Exynos 9820 platform and S10 targets from ExtremeROM"
+          git push origin exynos9820-support
