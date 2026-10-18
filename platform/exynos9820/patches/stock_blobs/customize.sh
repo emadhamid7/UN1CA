@@ -20,8 +20,6 @@ LOG_STEP_OUT
 LOG_STEP_IN "- Adding exynos 9820 OK Google Hotword Enrollment blobs"
 DELETE_FROM_WORK_DIR "product" "priv-app/HotwordEnrollmentOKGoogleEx4CORTEXM55"
 DELETE_FROM_WORK_DIR "product" "priv-app/HotwordEnrollmentXGoogleEx4CORTEXM55"
-ADD_TO_WORK_DIR "beyond" "product" "priv-app/HotwordEnrollmentOKGoogleExCORTEXM4/HotwordEnrollmentOKGoogleExCORTEXM4.apk" 0 0 644 "u:object_r:system_file:s0"
-ADD_TO_WORK_DIR "beyond" "product" "priv-app/HotwordEnrollmentXGoogleExCORTEXM4/HotwordEnrollmentXGoogleExCORTEXM4.apk" 0 0 644 "u:object_r:system_file:s0"
 LOG_STEP_OUT
 
 # 9820 game and graphics drivers
