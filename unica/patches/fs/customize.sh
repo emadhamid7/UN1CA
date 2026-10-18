@@ -41,6 +41,13 @@ MKBOOTIMG_ARGS="$(unpack_bootimg --boot_img "$TMP_DIR/$BOOT_FILE" --out "$TMP_DI
 while IFS= read -r f; do
     LOG "- Extracting $BOOT_FILE/$(basename "$f")"
 
+    # Some kernel-only / prebuilt boot images (e.g. Exynos 9820) ship an
+    # empty ramdisk. Nothing to patch there, so skip it instead of aborting.
+    if [ ! -s "$f" ]; then
+        LOG "- Skipping empty ramdisk"
+        continue
+    fi
+
     RAMDISK_FORMAT=""
     if [[ "$(READ_BYTES_AT "$f" "0" "2")" == "8b1f" ]]; then
         RAMDISK_FORMAT="gz"
