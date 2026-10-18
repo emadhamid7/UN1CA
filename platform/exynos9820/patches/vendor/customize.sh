@@ -51,9 +51,3 @@ sed -i "s/(allow snap_hidl hal_snap_service (service_manager (find)))/(allow sna
 
 LOG "- Fixing JSQZ node permission"
 echo "/dev/jsqz                 0660   mediacodec     camera" >> $WORK_DIR/vendor/ueventd.rc
-
-LOG_STEP_IN "- Adding S21 (p3sxxx) Light HAL"
-ADD_TO_WORK_DIR "p3sxxx" "vendor" "bin/hw/vendor.samsung.hardware.light-service"
-ADD_TO_WORK_DIR "p3sxxx" "vendor" "lib64/android.hardware.light-V1-ndk_platform.so"
-ADD_TO_WORK_DIR "p3sxxx" "vendor" "lib64/vendor.samsung.hardware.light-V1-ndk_platform.so"
-LOG_STEP_OUT
