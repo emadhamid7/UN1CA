@@ -149,14 +149,19 @@ jobs:
             libunwind-dev \
             libpcre2-dev \
             libzstd-dev \
-            linux-modules-extra-$(uname -r) \
             lld \
             protobuf-compiler \
             webp \
             curl \
             jq
 
-          sudo modprobe erofs f2fs
+          # Best effort: the extra-modules package may not exist for this kernel
+          sudo apt install -yq "linux-modules-extra-$(uname -r)" \
+            || echo "::warning::linux-modules-extra-$(uname -r) not available"
+
+          # This is the real gate: fail clearly if the filesystems can't load
+          sudo modprobe erofs f2fs \
+            || { echo "::error::erofs/f2fs kernel modules unavailable"; exit 1; }
 
           git config --global user.name "github-actions[bot]"
           git config --global user.email \
